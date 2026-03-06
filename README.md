@@ -1,5 +1,5 @@
 # Synthetix-4.0
-
+#PLEASE READ THE PPT ATTACHED - WE POURED OUT OUR HARDWORK ON IT
 Signal conditioning and extraction circuits designed using **LTSpice** and **KiCad** for isolating specific frequency components from a composite signal.
 
 ## Overview
