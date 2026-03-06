@@ -24,13 +24,13 @@ The project focuses on **analog filtering, signal conditioning, and frequency is
 | `Hackathon.kicad_pro`               | KiCad project file                               |
 | `~Hackathon.kicad_pcb.lck`          | KiCad PCB lock file                              |
 | `~Hackathon.kicad_sch.lck`          | KiCad schematic lock file                        |
-| `SIRandNFS.m.txt`                   | Matlab analysis            |
-
+| `SIRandNFS.m.txt`                   | Matlab analysis                                  |
+|`SecondaryoutputSchematic.asc`        | Secondary Output to show purity of output       |
 ## Tools Used
 
 * **LTSpice** – circuit simulation
 * **KiCad** – schematic and PCB design
-* **Analog filter design techniques**
+* **MatLAB**
 
 ## Concepts Used
 
