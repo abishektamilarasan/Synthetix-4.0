@@ -24,7 +24,7 @@ The project focuses on **analog filtering, signal conditioning, and frequency is
 | `Potentiometer Schematic.asc`       | Adjustable circuit for tuning signal levels      |
 | `Hackathon.kicad_pro`               | KiCad project file                               |
 | `~Hackathon.kicad_pcb.lck`          | KiCad PCB lock file                              |
-| `~Hackathon.kicad_sch.lck`          | KiCad schematic lock file                        |
+| `~Hackathon.kicad_sch.lck`(only for PCB edit)| KiCad schematic lock file                        |
 | `SIRandNFS.m.txt`                   | Matlab analysis                                  |
 |`SecondaryoutputSchematic.asc`        | Secondary Output to show purity of output       |
 ## Tools Used
