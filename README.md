@@ -22,9 +22,8 @@ The project focuses on **analog filtering, signal conditioning, and frequency is
 | `6Khz Signal schematic.asc`         | LTSpice schematic for isolating the 6 kHz signal |
 | `8khz Signal Schematic (Bonus).asc` | LTSpice schematic for extracting a 8 kHz signal  |
 | `Potentiometer Schematic.asc`       | Adjustable circuit for tuning signal levels      |
-| `Hackathon.kicad_pro`               | KiCad project file                               |
 | `~Hackathon.kicad_pcb.lck`          | KiCad PCB lock file                              |
-| `~Hackathon.kicad_sch.lck`(only for PCB edit)| KiCad schematic lock file                        |
+| `~GerberFiles`| Gerber files from Kicad                     |
 | `SIRandNFS.m.txt`                   | Matlab analysis                                  |
 |`SecondaryoutputSchematic.asc`        | Secondary Output to show purity of output       |
 ## Tools Used
