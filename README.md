@@ -20,6 +20,7 @@ The project focuses on **analog filtering, signal conditioning, and frequency is
 | ----------------------------------- | ------------------------------------------------ |
 | `4khz Signal Schematic (Bonus).asc` | LTSpice schematic for extracting a 4 kHz signal  |
 | `6Khz Signal schematic.asc`         | LTSpice schematic for isolating the 6 kHz signal |
+| `8khz Signal Schematic (Bonus).asc` | LTSpice schematic for extracting a 8 kHz signal  |
 | `Potentiometer Schematic.asc`       | Adjustable circuit for tuning signal levels      |
 | `Hackathon.kicad_pro`               | KiCad project file                               |
 | `~Hackathon.kicad_pcb.lck`          | KiCad PCB lock file                              |
@@ -39,6 +40,8 @@ The project focuses on **analog filtering, signal conditioning, and frequency is
 * High-pass and low-pass filters
 * Noise reduction
 * Frequency isolation
+* Grounding
+* PCB 
 
 
 ## Applications
