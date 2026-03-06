@@ -1,0 +1,88 @@
+% 1. Load Data from the specific path
+filename = 'C:\Users\sanja\OneDrive\Desktop\Synthex_Filter\transient_data.txt';
+
+% Use 'NumHeaderLines' to skip the text labels in the first row
+data = readmatrix(filename, 'NumHeaderLines', 1); 
+
+% Assign columns (Time is column 1, Voltage is column 2)
+t_raw = data(:,1);
+v_raw = data(:,2);
+
+% 2. Fix LTspice variable timing (Resampling)
+Fs = 200000; % Forced 200kHz sample rate for high-resolution
+t = (t_raw(1):1/Fs:t_raw(end))'; 
+v_out = interp1(t_raw, v_raw, t, 'linear'); % Uniform sampling
+
+% 3. Remove DC Offset (Fixes the "straight line" problem)
+v_out = v_out - mean(v_out); 
+
+% 4. FFT Calculation (No-Toolbox Manual Hamming Window)
+L = length(t);
+% Manual Hamming formula to reduce spectral leakage
+w = 0.54 - 0.46 * cos(2 * pi * (0:L-1)' / (L-1)); 
+Y = fft(v_out .* w); 
+
+P2 = abs(Y/L);
+P1 = P2(1:floor(L/2)+1);
+P1(2:end-1) = 2*P1(2:end-1);
+f = Fs*(0:(L/2))/L;
+P1_dB = 20*log10(P1 + eps); % eps prevents log(0) errors
+
+% 5. Identify Peaks for Quantitative Evidence (Requirement iv)
+% Find the highest peak in the usable range (3.5kHz to 8.5kHz)
+search_range = (f > 3500 & f < 8500); 
+[pks_6k, max_idx] = max(P1_dB(search_range));
+f_temp = f(search_range);
+f_peak = f_temp(max_idx);
+
+% Check interference levels at 18kHz and 55kHz
+[~, idx18k] = min(abs(f - 18000));
+[~, idx55k] = min(abs(f - 55000));
+
+% 6. Plotting the Results
+
+figure;
+plot(f/1000, P1_dB, 'LineWidth', 1.5); hold on;
+plot(f_peak/1000, pks_6k, 'ro', 'MarkerFaceColor', 'r'); % Mark the 6kHz peak
+grid on;
+title('Output Signal Dominance Verification (FFT)');
+xlabel('Frequency (kHz)'); ylabel('Magnitude (dB)');
+xlim([0 65]); % Show all interference components
+
+% Output Quantitative Evidence to Command Window
+fprintf('--- Quantitative Evidence (Requirement iv) ---\n');
+fprintf('Usable Signal Peak: %.2f kHz at %.2f dB\n', f_peak/1000, pks_6k);
+fprintf('18 kHz Interference Level: %.2f dB\n', P1_dB(idx18k));
+fprintf('55 kHz Interference Level: %.2f dB\n', P1_dB(idx55k));
+fprintf('Suppression Ratio (6k vs 18k): %.2f dB\n', pks_6k - P1_dB(idx18k));
+
+% --- QUANTITATIVE NOISE AND INTERFERENCE ANALYSIS ---
+
+% 1. Define Signal Power (at the 6 kHz peak found earlier)
+% Power is already in dB from P1_dB(max_idx)
+signal_power_db = pks_6k; 
+
+% 2. Calculate Average Noise Floor (Component E)
+% We sample a "quiet" frequency range (e.g., 30kHz to 40kHz) where no peaks exist
+noise_range = (f > 30000 & f < 40000);
+noise_floor_db = mean(P1_dB(noise_range));
+
+% 3. Calculate SNR (Signal to Broadband Noise)
+snr_val = signal_power_db - noise_floor_db;
+
+% 4. Calculate SIR for Component C (18 kHz Square Wave)
+[~, idx18k] = min(abs(f - 18000));
+sir_18k = signal_power_db - P1_dB(idx18k);
+
+% 5. Calculate SIR for Component D (55 kHz Sine Wave)
+[~, idx55k] = min(abs(f - 55000));
+sir_55k = signal_power_db - P1_dB(idx55k);
+
+% --- PRINT RESULTS FOR REPORT ---
+fprintf('\n--- Noise & Interference Suppression Verification (iv) ---\n');
+fprintf('Usable Signal Power (6 kHz): %.2f dB\n', signal_power_db);
+fprintf('Measured Noise Floor:        %.2f dB\n', noise_floor_db);
+fprintf('----------------------------------------------------------\n');
+fprintf('RESULT: Signal-to-Noise Ratio (SNR):    %.2f dB\n', snr_val);
+fprintf('RESULT: SIR (vs 18 kHz Interference):   %.2f dB\n', sir_18k);
+fprintf('RESULT: SIR (vs 55 kHz Interference):   %.2f dB\n', sir_55k);
